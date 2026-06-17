@@ -1,3 +1,6 @@
+" ~/.vimrc
+
+" Restore cursor to last edit position when reopening a file
 if has("autocmd")
   au BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -5,56 +8,41 @@ if has("autocmd")
     \ endif
 endif
 
+" Encoding
 set encoding=utf-8
 set fileencodings=utf-8
 
-set lazyredraw           " Redraw only when necessary
-set synmaxcol=200        " Limit syntax processing to first 200 columns
-syntax off               " Turn off syntax highlighting
-set nowrap               " Disable line wrapping
+" Display / performance
+set number               " line numbers
+set nowrap               " no line wrapping
+set lazyredraw           " redraw only when necessary
+set synmaxcol=200        " limit syntax processing to first 200 columns
+set showmatch            " highlight matching brackets
+set laststatus=2         " always show the status line
+set scrolloff=5          " keep 5 lines of context around the cursor
 
-" set relativenumber
-
-
-" Set indent to 2 spaces
+" Indentation — 2 spaces
 set expandtab
 set tabstop=2
 set shiftwidth=2
 
-
-" Switch syntax highlighting on when the terminal has colors or when using the
-" GUI (which always has colors).
-
-if &t_Co > 2 || has("gui_running")
-  " Revert with ":syntax off".
-  syntax on
-  " I like highlighting strings inside C comments.
-  " Revert with ":unlet c_comment_strings".
-  let c_comment_strings=1
-endif
-
-
-" new changes Nov23
-set number " display line numbers in editor
-syntax on " easier readability and color coding
-set showmatch " matching brackets
-set history=50 " enable commmand line history
-set nobackup " disable backup files
+" Editing behaviour
+set history=50                   " command-line history
+set backspace=indent,eol,start   " sane backspace in insert mode
+set nobackup                     " no backup files
 set nowritebackup
-set backspace=indent,eol,start " backspace work in insert mode
-set laststatus=2 " display status line
-set scrolloff=5 " keeps at least 5 lines above/below the cursor when scrolling
 
-
-" june 19
+" netrw
 let g:netrw_banner = 0
 
-"june 20
+" Syntax highlighting (when the terminal has colors or in the GUI)
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  let c_comment_strings=1        " highlight strings inside C comments
+endif
+
+" Plugins (vim-plug)
 call plug#begin('~/.vim/plugged')
-
-Plug 'tpope/vim-fugitive'
-
-" sept 23
-Plug 'preservim/nerdtree'
+Plug 'tpope/vim-fugitive'        " Git integration
+Plug 'preservim/nerdtree'        " file-tree sidebar
 call plug#end()
-
